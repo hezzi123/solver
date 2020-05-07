@@ -137,19 +137,19 @@ namespace solver
     }
     ComplexVariable operator/(const complex<double> num, const ComplexVariable& x)
     {
-        if(num == 0) throw std::out_of_range("Can't divide by 0");
+        if(num == 0.0) throw std::out_of_range("Can't divide by 0");
         return ComplexVariable(x.a / num , x.b / num , x.c / num);
     }
 
     ComplexVariable operator^(const ComplexVariable& x, const complex<double> num)
     {
-        if(num == 0)
-            return ComplexVariable(complex<double>(0,0),complex<double>(0,0),complex<double>(1,0));
-        else if(num == 1)
+        if(num == 0.0)
+            return ComplexVariable(complex<double>(0.0,0.0),complex<double>(0.0,0.0),complex<double>(1.0,0.0));
+        else if(num == 1.0)
             return ComplexVariable(x.a * 1.0, x.b * 1.0, x.c * 1.0);
-        else if(num == 2)
+        else if(num == 2.0)
         {
-            if(x.a != complex<double>(0,0))
+            if(x.a != complex<double>(0.0,0.0))
                 throw std::runtime_error("Power above 2");
             return ComplexVariable(x.b * x.b * 1.0 ,2.0*x.b*x.c , x.c * x.c * 1.0);
         }
