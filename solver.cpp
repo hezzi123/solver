@@ -118,7 +118,7 @@ namespace solver
     }
     ComplexVariable operator-(const ComplexVariable& cv1, const ComplexVariable& cv2)
     {
-        return ComplexVariable(cv1.a - cv2.a , cv1.b - cv2.b , cv1.c - cv2.c)
+        return ComplexVariable(cv1.a - cv2.a , cv1.b - cv2.b , cv1.c - cv2.c);
     }
 
     ComplexVariable operator*(const ComplexVariable& x, const complex<double> num) { return x; }
