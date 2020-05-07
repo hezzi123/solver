@@ -20,25 +20,24 @@ namespace solver
     {
         return RealVariable(x.a * num , x.b * num , x.c * num);
     }
-    RealVariable operator*(const RealVariable& rv1, const RealVariable& rv2)
+    RealVariable operator*(const RealVariable& x, const RealVariable& r)
     {
-        //checking limit cases
-        if(rv1.a !=0 && rv2.a != 0 )  throw std::out_of_range("The power is above 2 ") ;
-        if(rv1.a != 0 && rv2.b != 0  || rv1.b != 0 && rv2.a != rv1.b) throw std::out_of_range("The power is above 2 ") ;
-
-        return RealVariable(rv1.a * rv2.c + rv1.b * rv1.b + rv1.c * rv1.a , rv1.b * rv2.c + rv2.b * rv1.c
-                , rv1.c * rv2.c);
+        if(x.a * r.a == 0 && x.b * r.a==0 && x.a * r.b==0)
+        {
+            return RealVariable(x.b * r.b, x.b * r.c + x.c * r.b, x.c * r.c);
+        }
+        throw std::runtime_error("Possession greater than 2");
     }
 
     RealVariable operator/(const RealVariable& x, const double num)
     {
-        if(x == 0) throw std::out_of_range("Can't divide by 0") ;
-        return RealVariable(x.a / num, x.b / num , x.c / num)
+        if(num == 0) throw std::out_of_range("Can't divide by 0") ;
+        return RealVariable(x.a / num, x.b / num , x.c / num);
     }
     RealVariable operator/(const double num , const RealVariable& x)
     {
         if(x.a == 0 && x.b == 0 && x.c == 0 )  throw std::out_of_range("Can't divide by 0") ;
-        return RealVariable(num / x.a , num / x.b , num / x.c)
+        return RealVariable(num / x.a , num / x.b , num / x.c);
     }
 
     RealVariable operator+(const RealVariable& x, const double num)
@@ -73,7 +72,7 @@ namespace solver
             return RealVariable(0,0,1);
         else if(num == 1)
             return x;
-        else if(y==0)
+        else if(num == 2)
             return operator*(x , x);
         else
         {
@@ -81,9 +80,18 @@ namespace solver
         }
     }
 
-    RealVariable operator==(const RealVariable& x, const double num){ return x; }
-    RealVariable operator==(const double num, const RealVariable& x){ return x; }
-    RealVariable operator==(const RealVariable& rv1, const RealVariable& rv2){ return rv1; }
+    RealVariable operator==(const RealVariable& x, const double num)
+    {
+        return RealVariable(x.a * 1, x.b * 1, x.c - num);
+    }
+    RealVariable operator==(const double num, const RealVariable& x)
+    {
+        return x == num;
+    }
+    RealVariable operator==(const RealVariable& rv1, const RealVariable& rv2)
+    {
+        return RealVariable(rv1.a - rv2.a, rv1.a - rv2.b , rv1.c - rv2.c);
+    }
 
     //ComplexVariable
     ComplexVariable operator+(const ComplexVariable& x, const complex<double> num) { return x; }
@@ -108,11 +116,11 @@ namespace solver
     ComplexVariable operator==(const ComplexVariable& cv1, const ComplexVariable& cv2) { return cv1; }
 
     //solve
-    double solve (const RealVariable& x)
+    double solve (const RealVariable x)
     {
-        if(t.a == 0 && t.b == 0) throw  std::out_of_range("Cant solve c = 0");
-        if(t.a > 0 && t.b == 0 && t.c > 0 ) throw  std::out_of_range("Cant solve x^2 = -c");
-        if(t.a != 0)
+        if(x.a == 0 && x.b == 0) throw  std::out_of_range("Cant solve c = 0");
+        if(x.a > 0 && x.b == 0 && 0 < x.c) throw  std::out_of_range("Cant solve x^2 = -c");
+        if(x.a != 0)
         {
             return (-x.b + sqrt((pow(x.b , 2) - 4 * x.a * x.c)))/(2 * x.a);
         }

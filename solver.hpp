@@ -12,17 +12,17 @@ namespace solver
 {
     class RealVariable
     {
-        double a , b , c;
     public:
+        double a , b , c;
         RealVariable() :a(0), b(1), c(0) {}    //x
         RealVariable(double a, double b, double c) : a(a), b(b), c(c) {}
 
         friend RealVariable operator*(const RealVariable& x, const double num);
         friend RealVariable operator*(const double num, const RealVariable& x);
-        friend RealVariable operator*(const RealVariable& rv1, const RealVariable& rv2);
+//        friend RealVariable operator*(const RealVariable& rv1, const RealVariable& rv2);
 
         friend RealVariable operator/(const RealVariable& x, const double num);
-        friend RealVariable operator/(const double num , const RealVariable& x)
+        friend RealVariable operator/(const double num , const RealVariable& x);
 
         friend RealVariable operator+(const RealVariable& x, const double num);
         friend RealVariable operator+(const double num, const RealVariable& x);
@@ -68,7 +68,7 @@ namespace solver
         friend ComplexVariable operator==(const ComplexVariable& cv1, const ComplexVariable& cv2);
     };
 
-    double solve(const RealVariable& x);
+    double solve(const RealVariable x);
     complex<double> solve(const ComplexVariable& x);
 
 }
