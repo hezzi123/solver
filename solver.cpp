@@ -163,7 +163,7 @@ namespace solver
     //solve
     double solve (const RealVariable x)
     {
-        if(x.a == 0 && x.b == 0) throw  std::out_of_range("Cant solve c = 0");
+        if(x.a == 0 && x.b == 0) throw  std::out_of_range("Cant solve");
         if(x.a > 0 && x.b == 0 && 0 < x.c) throw  std::out_of_range("Cant solve sqrt of minus");
         if(x.a != 0)
         {
@@ -173,7 +173,7 @@ namespace solver
     }
     complex<double> solve (const ComplexVariable& x)
     {
-        if (x.a == 0.0 && x.b == 0.0) throw  std::out_of_range("Cant solve c = 0");
+        if (x.a == 0.0 && x.b == 0.0) throw  std::out_of_range("Cant solve");
         if (x.a == 0.0)
         {
             return -x.c / x.b;
