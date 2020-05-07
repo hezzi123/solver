@@ -55,11 +55,11 @@ namespace solver
 
     RealVariable operator-(const RealVariable& x, const double num)
     {
-        return RealVariable(x.a , x.b , x.c - num);
+        return RealVariable(x.a * 1 , x.b * 1 , x.c - num);
     }
     RealVariable operator-(const double num, const RealVariable& x)
     {
-        return RealVariable(-x.a , -x.b , num - x.c);
+        return RealVariable(-x.a * 1 , -x.b * 1, num - x.c);
     }
     RealVariable operator-(const RealVariable& rv1, const RealVariable& rv2)
     {
@@ -94,17 +94,35 @@ namespace solver
     }
 
     //ComplexVariable
-    ComplexVariable operator+(const ComplexVariable& x, const complex<double> num) { return x; }
-    ComplexVariable operator+(const complex<double> num, const ComplexVariable& x) { return x; }
-    ComplexVariable operator+(const ComplexVariable& cv1, const ComplexVariable& cv2) { return cv1; }
+    ComplexVariable operator+(const ComplexVariable& x, const complex<double> num)
+    {
+        return ComplexVariable(x.a * 1, x.b * 1, x.c + num);
+    }
+    ComplexVariable operator+(const complex<double> num, const ComplexVariable& x)
+    {
+        return ComplexVariable(-x.a * 1, -x.b * 1, num + x.c);
 
-    ComplexVariable operator-(const ComplexVariable& x, const complex<double> num) { return x; }
-    ComplexVariable operator-(const complex<double> num, const ComplexVariable& x) { return x; }
-    ComplexVariable operator-(const ComplexVariable& cv1, const ComplexVariable& cv2) { return cv1; }
+    }
+    ComplexVariable operator+(const ComplexVariable& cv1, const ComplexVariable& cv2)
+    {
+        return ComplexVariable(cv1.a + cv2.a , cv1.b + cv2.b , cv1.c + cv2.c)
+    }
+
+    ComplexVariable operator-(const ComplexVariable& x, const complex<double> num)
+    {
+        return ComplexVariable(x.a * 1, x.b * 1, x.c - num);
+    }
+    ComplexVariable operator-(const complex<double> num, const ComplexVariable& x)
+    {
+        return ComplexVariable(-x.a * 1, -x.b * 1, num - x.c);
+    }
+    ComplexVariable operator-(const ComplexVariable& cv1, const ComplexVariable& cv2)
+    {
+        return ComplexVariable(cv1.a - cv2.a , cv1.b - cv2.b , cv1.c - cv2.c)
+    }
 
     ComplexVariable operator*(const ComplexVariable& x, const complex<double> num) { return x; }
     ComplexVariable operator*(const complex<double> num, const ComplexVariable& x) { return x; }
-    ComplexVariable operator*(const ComplexVariable& cv1, const ComplexVariable& cv2) { return cv1; }
 
     ComplexVariable operator/(const ComplexVariable& x, const complex<double> num) { return x; }
     ComplexVariable operator/(const ComplexVariable& cv1, const ComplexVariable& cv2) { return cv1; }
@@ -128,7 +146,11 @@ namespace solver
     }
     complex<double> solve (const ComplexVariable& x)
     {
-        complex<double> complex1;
-        return complex1;
+        if (x.a == 0.0 && x.b == 0.0) throw  std::out_of_range("Cant solve c = 0");
+        if (x.a == 0.0)
+        {
+            return -x.c / x.b;
+        }
+        return (-x.b + sqrt(pow(x.b , 2) - 4 * x.a * x.c)) / (2 * x.a);
     }
 }

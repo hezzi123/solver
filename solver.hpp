@@ -41,8 +41,8 @@ namespace solver
 
     class ComplexVariable
     {
-        complex<double> a,b,c;
     public:
+        complex<double> a,b,c;
         ComplexVariable():a(0), b(1), c(0) {}    //x
         ComplexVariable(complex<double> a, complex<double> b, complex<double> c):a(a), b(b), c(c) {}
 
