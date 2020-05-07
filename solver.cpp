@@ -20,13 +20,13 @@ namespace solver
     {
         return RealVariable(x.a * num , x.b * num , x.c * num);
     }
-    RealVariable operator*(const RealVariable& x, const RealVariable& r)
+    RealVariable operator*(const RealVariable& rv1, const RealVariable& rv2)
     {
-        if(x.a * r.a == 0 && x.b * r.a==0 && x.a * r.b==0)
+        if(rv1.a * rv2.a == 0 && rv1.b * rv2.a==0 && rv1.a * rv2.b==0)
         {
-            return RealVariable(x.b * r.b, x.b * r.c + x.c * r.b, x.c * r.c);
+            return RealVariable(rv1.b * rv2.b, rv1.b * rv2.c + rv1.c * rv2.b, rv1.c * rv2.c);
         }
-        throw std::runtime_error("Possession greater than 2");
+        throw std::runtime_error("Power greater than 2");
     }
 
     RealVariable operator/(const RealVariable& x, const double num)
