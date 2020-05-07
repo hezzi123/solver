@@ -121,23 +121,50 @@ namespace solver
         return ComplexVariable(cv1.a - cv2.a , cv1.b - cv2.b , cv1.c - cv2.c);
     }
 
-    ComplexVariable operator*(const ComplexVariable& x, const complex<double> num) { return x; }
-    ComplexVariable operator*(const complex<double> num, const ComplexVariable& x) { return x; }
+    ComplexVariable operator*(const ComplexVariable& x, const complex<double> num)
+    {
+        return ComplexVariable(x.a * num , x.b * num , x.c * num);
+    }
+    ComplexVariable operator*(const complex<double> num, const ComplexVariable& x)
+    {
+        return ComplexVariable(x.a * num , x.b * num , x.c * num);
+    }
 
-    ComplexVariable operator/(const ComplexVariable& x, const complex<double> num) { return x; }
-    ComplexVariable operator/(const ComplexVariable& cv1, const ComplexVariable& cv2) { return cv1; }
+    ComplexVariable operator/(const ComplexVariable& x, const complex<double> num)
+    {
+        if(num == complex(0.0 , 0.0)) throw std::out_of_range("Can't divide by 0");
+        return ComplexVariable(x.a / num , x.b / num , x.c / num);
+    }
+    ComplexVariable operator/(const complex<double> num, const ComplexVariable& x)
+    {
+        if(y==0) throw std::out_of_range("Can't divide by 0");
+        return ComplexVariable(x.a / num , x.b / num , x.c / num);
+    }
 
-    ComplexVariable operator^(const ComplexVariable& x, const complex<double> num) { return x; }
+    ComplexVariable operator^(const ComplexVariable& x, const complex<double> num)
+    {
+        if(y==0)
+            return ComplexVariable(complex<double>(0,0),complex<double>(0,0),complex<double>(1,0));
+        else if(y==1)
+            return ComplexVariable(x.a * 1.0, x.b * 1.0, x.c * 1.0);
+        else if(y==2)
+        {
+            if(x.a != complex<double>(0,0))
+                throw std::runtime_error("Power above 2");
+            return ComplexVariable(x.b * x.b * 1.0 ,2.0*x.b*x.c , x.c * x.c * 1.0);
+        }
+        throw std::runtime_error("Power above 2");
+    }
 
-    ComplexVariable operator==(const ComplexVariable& x, const complex<double> num) { return x; }
-    ComplexVariable operator==(const complex<double> num, const ComplexVariable& x) { return x; }
-    ComplexVariable operator==(const ComplexVariable& cv1, const ComplexVariable& cv2) { return cv1; }
+    ComplexVariable operator==(const ComplexVariable& x, const complex<double> num) { return x - num; }
+    ComplexVariable operator==(const complex<double> num, const ComplexVariable& x) { return x - num; }
+    ComplexVariable operator==(const ComplexVariable& cv1, const ComplexVariable& cv2) { return cv1 - cv2; }
 
     //solve
     double solve (const RealVariable x)
     {
         if(x.a == 0 && x.b == 0) throw  std::out_of_range("Cant solve c = 0");
-        if(x.a > 0 && x.b == 0 && 0 < x.c) throw  std::out_of_range("Cant solve x^2 = -c");
+        if(x.a > 0 && x.b == 0 && 0 < x.c) throw  std::out_of_range("Cant solve sqrt of minus");
         if(x.a != 0)
         {
             return (-x.b + sqrt((pow(x.b , 2) - 4 * x.a * x.c)))/(2 * x.a);
